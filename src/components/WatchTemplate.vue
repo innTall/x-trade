@@ -30,7 +30,7 @@ const { selectTicker, deselectTicker, MAX_TICKERS } = useSelectStore();
 				<p>Selected:</p>
 				<ul>
 					<li v-for="ticker in selectedTickers" :key="ticker.symbol">
-						{{ ticker.symbol }} - {{ ticker.lastPrice }} - {{ ticker.quoteVolume }}
+						{{ ticker.symbol }} - {{ ticker.lastPrice *1 }} - {{ ticker.quoteVolume }}
 						<button @click="deselectTicker(ticker.symbol)" class="ml-2 text-red-600 font-bold">
 							X
 						</button>
