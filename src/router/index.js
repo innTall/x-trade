@@ -7,7 +7,13 @@ const router = createRouter({
       path: "/",
       name: "Watchlist",
       component: WatchList,
-    }
+    },
+    {
+      path: "/template",
+      name: "WatchTemplate",
+      component: () => import("../components/WatchTemplate.vue"),
+      props: true,
+    },
   ],
 });
 export default router;

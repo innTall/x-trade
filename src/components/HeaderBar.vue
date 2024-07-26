@@ -9,6 +9,7 @@ import LogoItem from './layouts/LogoItem.vue';
 		</div>
 		<div>
 			<RouterLink :to="{ name: 'Watchlist' }"> Watch |</RouterLink>
+			<RouterLink :to="{ name: 'WatchTemplate' }"> Template |</RouterLink>
 		</div>
 		<div class="">
 		</div>
