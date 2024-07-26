@@ -1,18 +1,21 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import data from "../data/ticker.json";
+import { storeToRefs } from "pinia";
+import { useAssetStore } from "./assets.js";
+
 export const useTickerStore = defineStore(
   "ticker",
   () => {
-    const asset = ref("USDT");
     const tickers = ref([]);
+    const { selectedAsset } = storeToRefs(useAssetStore());
     async function getSymbols() {
       try {
         //const uri = "https://api.binance.com/api/v3/ticker/24hr";
         //const response = await fetch(uri);
         //const data = await response.json();
         const filterAsset = data.filter((item) =>
-          item.symbol.endsWith(asset.value)
+          item.symbol.endsWith(selectedAsset.value)
         );
         const filterZero = filterAsset.filter((item) => item.count != 0);
         const filterOut = filterZero.filter(
@@ -35,7 +38,11 @@ export const useTickerStore = defineStore(
         console.log("error occurred", err);
       }
     }
-    getSymbols();
+    watch(selectedAsset, (newAsset) => {
+      if (newAsset) {
+        getSymbols(newAsset);
+      }
+    });
     return { tickers, getSymbols };
   },
   { persist: false }
