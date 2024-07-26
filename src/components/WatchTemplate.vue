@@ -4,7 +4,7 @@ import { useSearchStore } from '@/stores/searches.js';
 import { useTickerStore } from "@/stores/tickers.js";
 import { useSelectStore } from '@/stores/selects.js';
 const { searchTicker, searchTickers } = storeToRefs(useSearchStore());
-const { selectedTickers } = storeToRefs(useSelectStore());
+const { selectedTickers, errorMessage } = storeToRefs(useSelectStore());
 const { tickers } = storeToRefs(useTickerStore());
 const { highlightMatch } = useSearchStore();
 const { selectTicker, deselectTicker } = useSelectStore();
@@ -12,7 +12,9 @@ const { selectTicker, deselectTicker } = useSelectStore();
 
 <template>
 	<div class="ml-2">
-		<label for="search">Tickers</label>
+		<div v-if="errorMessage" class="text-red-600">
+			{{ errorMessage }}
+		</div>
 		<div>
 			<input v-model="searchTicker" type="text" id="search" placeholder="Type here..." class="bg-gray-800">
 		</div>
