@@ -4,10 +4,10 @@ import { useSearchStore } from '@/stores/searches.js';
 import { useTickerStore } from "@/stores/tickers.js";
 import { useSelectStore } from '@/stores/selects.js';
 const { searchTicker, searchTickers } = storeToRefs(useSearchStore());
-const { selectedTicker } = storeToRefs(useSelectStore());
+const { selectedTickers } = storeToRefs(useSelectStore());
 const { tickers } = storeToRefs(useTickerStore());
 const { highlightMatch } = useSearchStore();
-const { selectTicker } = useSelectStore();
+const { selectTicker, deselectTicker } = useSelectStore();
 </script>
 
 <template>
@@ -23,8 +23,14 @@ const { selectTicker } = useSelectStore();
 					v-html="highlightMatch(ticker.symbol)">
 				</li>
 			</ul>
-			<p v-if="selectedTicker"> Selected:
-				{{ selectedTicker.symbol }} - {{ selectedTicker.lastPrice *1 }} - {{ selectedTicker.quoteVolume }} </p>
+			<div v-if="selectedTickers.length">
+				<p>Selected:</p>
+				<ul>
+					<li v-for="ticker in selectedTickers" :key="ticker.symbol" @click="deselectTicker(ticker.symbol)">
+						{{ ticker.symbol }} - {{ ticker.lastPrice }} - {{ ticker.quoteVolume }}
+					</li>
+				</ul>
+			</div>
 		</div>
 	</div>
 </template>

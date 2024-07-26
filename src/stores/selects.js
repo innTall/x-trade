@@ -7,13 +7,24 @@ export const useSelectStore = defineStore(
   "select",
   () => {
     const { searchTickers } = storeToRefs(useSearchStore());
-    const selectedTicker = ref(null);
+    const selectedTickers = ref([]);
     const selectTicker = (tickerSymbol) => {
-      selectedTicker.value = searchTickers.value.find(
+      const ticker = searchTickers.value.find(
         ticker => ticker.symbol === tickerSymbol
       );
+      if (
+        ticker &&
+        !selectedTickers.value.find(t => t.symbol === tickerSymbol)
+      ) {
+        selectedTickers.value.push(ticker);
+      }
     };
-    return { selectedTicker, selectTicker };
+    const deselectTicker = (tickerSymbol) => {
+      selectedTickers.value = selectedTickers.value.filter(
+        ticker => ticker.symbol !== tickerSymbol
+      );
+    };
+    return { selectedTickers, selectTicker,  };
   },
   { persist: false }
 );
