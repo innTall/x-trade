@@ -5,8 +5,10 @@ import FooterBar from './components/FooterBar.vue';
 <template>
   <div class="min-h-screen bg-gray-900 text-white">
     <HeaderBar />
-    <div class="pt-14 pb-10">
-      <RouterView />
+    <div class="pt-24 pb-10">
+      <RouterView v-slot="{ Component, route }">
+        <component :is="Component" :key="route.path" />
+      </RouterView>
     </div>
     <FooterBar />
   </div>
