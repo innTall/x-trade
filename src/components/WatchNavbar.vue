@@ -30,10 +30,9 @@ const selectArray = (index) => {
 	<div class="fixed top-14 h-10 left-0 right-0 bg-gray-900 shadow z-10 border-b border-green-600">
 		<nav class="container p-1 flex justify-between center text-sm">
 			<div class="flex items-center ml-2">
-				<ul>
+				<ul class="flex flex-start ml-2 gap-5">
 					<li v-for="(array, index) in arrays" :key="index">
 						<a href="#" @click="selectArray(index)">{{ array.name }}</a>
-						<button @click="deleteArray(index)">Delete</button>
 					</li>
 				</ul>
 			</div>
@@ -46,6 +45,17 @@ const selectArray = (index) => {
 				<div>
 					<label for="array-name">Enter new array name:</label>
 					<input v-model="newArrayName" id="array-name" />
+				</div>
+				<div>
+					<h3>Existing Arrays</h3>
+					<ul>
+						<li v-for="(array, index) in arrays" :key="index">
+							{{ array.name }}
+							<button @click="deleteArray(index)" class="font-bold text-red-600">
+								X
+							</button>
+						</li>
+					</ul>
 				</div>
 			</template>
 		</WatchModal>
