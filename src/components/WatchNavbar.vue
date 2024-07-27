@@ -1,28 +1,16 @@
 <script setup>
 import WatchModal from '@/components/WatchModal.vue';
+import { useArrayStore } from '@/stores/arrays';
+import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
-const arrays = ref([]);
+const { arrays, newArrayName } = storeToRefs(useArrayStore());
+const { createArray, deleteArray,	selectArray } = useArrayStore();
 const showModal = ref(false);
-const newArrayName = ref('');
-
 const openModal = () => {
 	showModal.value = true;
 };
 const closeModal = () => {
 	showModal.value = false;
-};
-const createArray = () => {
-	if (newArrayName.value) {
-		arrays.value.push({ name: newArrayName.value, items: [] });
-		newArrayName.value = '';
-		closeModal();
-	}
-};
-const deleteArray = (index) => {
-	arrays.value.splice(index, 1);
-};
-const selectArray = (index) => {
-	alert(`Array ${arrays.value[index].name} selected`);
 };
 </script>
 
