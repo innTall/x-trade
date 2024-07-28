@@ -7,12 +7,14 @@ const router = createRouter({
       path: "/",
       name: "Watchlist",
       component: WatchList,
-    },
-    {
-      path: "/template",
-      name: "WatchTemplate",
-      component: () => import("../components/WatchTemplate.vue"),
-      props: true,
+      children: [
+        {
+          path: "/watch/:arrayName",
+          name: "WatchTemplate",
+          component: () => import("../components/WatchTemplate.vue"),
+          props: true,
+        },
+      ],
     },
   ],
 });

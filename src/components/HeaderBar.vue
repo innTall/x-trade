@@ -1,8 +1,8 @@
 <script setup>
 import LogoItem from './layouts/LogoItem.vue';
-import AssetSelect from './AssetSelect.vue';
 import { onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
+import AssetSelect from './AssetSelect.vue';
 import { useAssetStore } from '@/stores/assets.js';
 import { useTickerStore } from '@/stores/tickers.js';
 const { selectedAsset } = storeToRefs(useAssetStore());
@@ -13,7 +13,6 @@ function handleAssetChange(newAsset) {
 	getSymbols(newAsset);
 }
 onMounted(() => {
-	// Fetch tickers for the initial selected asset
 	getSymbols(selectedAsset.value);
 });
 </script>
@@ -26,7 +25,6 @@ onMounted(() => {
 		</div>
 		<div>
 			<RouterLink :to="{ name: 'Watchlist' }"> Watch |</RouterLink>
-			<RouterLink :to="{ name: 'WatchTemplate' }"> Template |</RouterLink>
 		</div>
 		<div class="">
 			<AssetSelect @assetChanged="handleAssetChange" />
