@@ -7,7 +7,7 @@ const { searchTicker, searchTickers } = storeToRefs(useSearchStore());
 const { selectedTickers, errorMessage } = storeToRefs(useSelectStore());
 const { tickers } = storeToRefs(useTickerStore());
 const { highlightMatch } = useSearchStore();
-const { selectTicker, deselectTicker, MAX_TICKERS } = useSelectStore();
+const { selectTicker, deleteTicker, MAX_TICKERS } = useSelectStore();
 </script>
 
 <template>
@@ -22,7 +22,7 @@ const { selectTicker, deselectTicker, MAX_TICKERS } = useSelectStore();
 		<div>
 			<ul v-if="searchTickers.length">
 				<li> Showing {{ searchTickers.length }} of {{ tickers.length }} results</li>
-				<li v-for="ticker in searchTickers" :key="ticker.symbol" @click="selectTicker(ticker.symbol)"
+				<li v-for="ticker in searchTickers" :key="ticker.symbol" @click="selectTicker(ticker)"
 					v-html="highlightMatch(ticker.symbol)">
 				</li>
 			</ul>
@@ -30,8 +30,8 @@ const { selectTicker, deselectTicker, MAX_TICKERS } = useSelectStore();
 				<p>Selected:</p>
 				<ul>
 					<li v-for="ticker in selectedTickers" :key="ticker.symbol">
-						{{ ticker.symbol }} - {{ ticker.lastPrice *1 }} - {{ ticker.quoteVolume }}
-						<button @click="deselectTicker(ticker.symbol)" class="ml-2 text-red-600 font-bold">
+						{{ ticker.symbol }} - {{ ticker.lastPrice * 1 }} - {{ ticker.quoteVolume }}
+						<button @click="deleteTicker(ticker)" class="ml-2 text-red-600 font-bold">
 							X
 						</button>
 					</li>

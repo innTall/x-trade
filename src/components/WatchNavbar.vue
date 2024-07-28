@@ -1,17 +1,23 @@
 <script setup>
-import WatchModal from '@/components/WatchModal.vue';
-import { useArrayStore } from '@/stores/arrays';
+import { ref, watch } from 'vue';
+import { useRoute, useRouter, RouterLink } from 'vue-router';
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
-const { arrays, newArrayName } = storeToRefs(useArrayStore());
-const { createArray, deleteArray,	selectArray } = useArrayStore();
-const showModal = ref(false);
-const openModal = () => {
-	showModal.value = true;
-};
-const closeModal = () => {
-	showModal.value = false;
-};
+import { useArrayStore } from '@/stores/arrays.js';
+const { arrays } = storeToRefs(useArrayStore());
+const { selectArray } = useArrayStore();
+const route = useRoute();
+const router = useRouter();
+const selectedArray = ref(route.params.arrayName);
+const props = defineProps({
+	onAdd: {
+		type: Function,
+		required: true,
+	},
+});
+
+watch(route, (newRoute) => {
+	selectedArray.value = newRoute.params.arrayName;
+});
 </script>
 
 <template>
@@ -20,33 +26,19 @@ const closeModal = () => {
 			<div class="flex items-center ml-2">
 				<ul class="flex flex-start ml-2 gap-5">
 					<li v-for="(array, index) in arrays" :key="index">
-						<a href="#" @click="selectArray(index)">{{ array.name }}</a>
+						<RouterLink :to="{ name: 'WatchTemplate', params: { arrayName: array.name } }" class="hover:bg-gray-700"
+							:class="{ 'font-bold underline': selectedArray === array.name }" @click="selectArray(array.name)">
+							{{ array.name }}
+						</RouterLink>
 					</li>
 				</ul>
 			</div>
 			<div class="flex justify-end mr-5 items-center">
-				<button @click="openModal" class="p-1 rounded-md border border-green-600">Add</button>
+				<button @click="openModal" class="p-1 rounded-md border border-green-600">
+					Add
+				</button>
 			</div>
 		</nav>
-		<WatchModal v-if="showModal" @close="closeModal" @create="createArray">
-			<template v-slot:body>
-				<div>
-					<label for="array-name">Enter new array name:</label>
-					<input v-model="newArrayName" id="array-name" />
-				</div>
-				<div>
-					<h3>Existing Arrays</h3>
-					<ul>
-						<li v-for="(array, index) in arrays" :key="index">
-							{{ array.name }}
-							<button @click="deleteArray(index)" class="font-bold text-red-600">
-								X
-							</button>
-						</li>
-					</ul>
-				</div>
-			</template>
-		</WatchModal>
 	</div>
 </template>
 
