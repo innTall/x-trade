@@ -11,12 +11,9 @@ export const useSelectStore = defineStore(
     const errorMessage = ref("");
     const MAX_TICKERS = 3;
 
-    const selectTicker = (tickerSymbol) => {
-      const ticker = searchTickers.value.find(
-        (ticker) => ticker.symbol === tickerSymbol
-      );
+    const selectTicker = (ticker) => {
       errorMessage.value = "";
-      if (selectedTickers.value.includes(ticker)) {
+      if (selectedTickers.value.find(t => t.symbol === ticker.symbol)) {
         errorMessage.value = "This ticker is already selected.";
         return;
       }
@@ -25,18 +22,18 @@ export const useSelectStore = defineStore(
         return;
       }
       selectedTickers.value.push(ticker);
-      //searchTicker.value = ""; // Always clear the search input
+      searchTicker.value = ""; // Always clear the search input
     };
-    const deselectTicker = (tickerSymbol) => {
+    const deleteTicker = (ticker) => {
       selectedTickers.value = selectedTickers.value.filter(
-        (ticker) => ticker.symbol !== tickerSymbol
+        t => t.symbol !== ticker.symbol
       );
     };
     
     watch(searchTicker, () => {
       errorMessage.value = "";
     });
-    return { selectedTickers, errorMessage, MAX_TICKERS, selectTicker, deselectTicker };
+    return { selectedTickers, errorMessage, MAX_TICKERS, selectTicker, deleteTicker };
   },
   { persist: false }
 );

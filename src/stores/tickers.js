@@ -43,6 +43,7 @@ export const useTickerStore = defineStore(
         getSymbols(newAsset);
       }
     });
+    getSymbols(selectedAsset.value);
     return { tickers, getSymbols };
   },
   { persist: false }

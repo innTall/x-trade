@@ -1,9 +1,11 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 export const useArrayStore = defineStore(
   "array",
   () => {
+    const router = useRouter();
     const arrays = ref([]);
     const newArrayName = ref("");
 
@@ -18,8 +20,8 @@ export const useArrayStore = defineStore(
       arrays.value.splice(index, 1);
     };
 
-    const selectArray = (index) => {
-      alert(`Array ${arrays.value[index].name} selected`);
+    const selectArray = (arrayName) => {
+      router.push({ name: "WatchTemplate", params: { arrayName } });
     };
 
     return {
