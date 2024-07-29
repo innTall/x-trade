@@ -10,8 +10,7 @@ import MathPanel from '../components/MathPanel.vue';
 			<div class="border-b">
 				<p>Chart</p>
 			</div>
-			<div class="border-b">
-				<h3 class="font-bold underline">Math Settings Panel</h3>
+			<div class="p-2 border-b border-green-600">
 				<MathPanel />
 			</div>
 			<div class="border-b">

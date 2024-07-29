@@ -1,29 +1,29 @@
 import { defineStore } from "pinia";
-import { ref, watch, onMounted } from "vue";
+import { ref, computed } from "vue";
 export const useMinmaxStore = defineStore(
   "minmax",
   () => {
-    //const storeName = "minmax";
     const minPrice = ref(null);
     const maxPrice = ref(null);
     const gridSize = ref(null);
-    const errorMessage = ref("");
+    const priceAlert = computed(() => {
+      return minPrice.value >= maxPrice.value;
+    });
 
     const getProfit = () => {
-      if (minPrice.value < maxPrice.value) {
+      if (!priceAlert.value) {
         gridSize.value = (
           ((Number(maxPrice.value / minPrice.value - 1) / 2 +
             (1 - minPrice.value / maxPrice.value) / 2) /
             2) *
           100
         ).toFixed(1);
-        errorMessage.value = "";
       } else {
-        errorMessage.value = "Price !";
+        gridSize.value = null;
       }
     };
-    getProfit();
-    return { minPrice, maxPrice, gridSize, errorMessage, getProfit };
+    //getProfit();
+    return { minPrice, maxPrice, gridSize, priceAlert, getProfit };
   },
   { persist: true }
 );
