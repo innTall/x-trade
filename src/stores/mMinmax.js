@@ -3,9 +3,9 @@ import { ref, computed } from "vue";
 export const useMinmaxStore = defineStore(
   "minmax",
   () => {
-    const minPrice = ref(null);
-    const maxPrice = ref(null);
-    const gridSize = ref(null);
+    const minPrice = ref();
+    const maxPrice = ref();
+    const gridSize = ref();
     const priceAlert = computed(() => {
       return minPrice.value >= maxPrice.value;
     });

@@ -1,6 +1,7 @@
 <script setup>
 import MathNavbar from '../components/MathNavbar.vue';
 import MathPanel from '../components/MathPanel.vue';
+import MathTable from '../components/MathTable.vue';
 </script>
 
 <template>
@@ -14,7 +15,7 @@ import MathPanel from '../components/MathPanel.vue';
 				<MathPanel />
 			</div>
 			<div class="border-b">
-				<p>Table</p>
+				<MathTable />
 			</div>
 		</div>
 		<RouterView />
