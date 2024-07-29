@@ -8,6 +8,7 @@ export const useArrayStore = defineStore(
     const router = useRouter();
     const arrays = ref([]);
     const newArrayName = ref("");
+    const selectedArray = ref('');
 
     const createArray = () => {
       if (newArrayName.value) {
@@ -21,15 +22,28 @@ export const useArrayStore = defineStore(
     };
 
     const selectArray = (arrayName) => {
+      selectedArray.value = arrays.value.find(
+        array => array.name === arrayName
+      );
       router.push({ name: "WatchTemplate", params: { arrayName } });
     };
 
-    return {
-      arrays,
-      newArrayName,
-      createArray,
-      deleteArray,
-      selectArray,
+    const addTickerToArray = (ticker) => {
+      if (selectedArray.value) {
+        selectedArray.value.items.push(ticker);
+      }
+    };
+
+    const removeTickerFromArray = (ticker) => {
+      if (selectedArray.value) {
+        selectedArray.value.items = selectedArray.value.items.filter(
+          (t) => t.symbol !== ticker.symbol
+        );
+      }
+    };
+    return { arrays, newArrayName,
+      createArray, deleteArray, selectArray,
+      addTickerToArray, removeTickerFromArray, selectedArray,
     };
   },
   { persist: true }

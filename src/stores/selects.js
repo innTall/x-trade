@@ -2,11 +2,13 @@ import { defineStore } from "pinia";
 import { ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useSearchStore } from "./searches.js";
+import { useArrayStore } from "./arrays.js";
 
 export const useSelectStore = defineStore(
   "select",
   () => {
     const { searchTicker, searchTickers } = storeToRefs(useSearchStore());
+    const { addTickerToArray, removeTickerFromArray } = useArrayStore();
     const selectedTickers = ref([]);
     const errorMessage = ref("");
     const MAX_TICKERS = 3;
@@ -22,12 +24,14 @@ export const useSelectStore = defineStore(
         return;
       }
       selectedTickers.value.push(ticker);
+      addTickerToArray(ticker);
       searchTicker.value = ""; // Always clear the search input
     };
     const deleteTicker = (ticker) => {
       selectedTickers.value = selectedTickers.value.filter(
         t => t.symbol !== ticker.symbol
       );
+      removeTickerFromArray(ticker);
     };
     
     watch(searchTicker, () => {

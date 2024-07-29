@@ -1,13 +1,11 @@
 <script setup>
-import { ref, watch } from 'vue';
-import { useRoute, useRouter, RouterLink } from 'vue-router';
+import { watch } from 'vue';
+import { useRoute, RouterLink } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useArrayStore } from '@/stores/arrays.js';
-const { arrays } = storeToRefs(useArrayStore());
+const { arrays, selectedArray } = storeToRefs(useArrayStore());
 const { selectArray } = useArrayStore();
 const route = useRoute();
-const router = useRouter();
-const selectedArray = ref(route.params.arrayName);
 const props = defineProps({
 	onAdd: {
 		type: Function,
@@ -27,7 +25,7 @@ watch(route, (newRoute) => {
 				<ul class="flex flex-start ml-2 gap-5">
 					<li v-for="(array, index) in arrays" :key="index">
 						<RouterLink :to="{ name: 'WatchTemplate', params: { arrayName: array.name } }" class="hover:bg-gray-700"
-							:class="{ 'font-bold underline': selectedArray === array.name }" @click="selectArray(array.name)">
+							:class="{ 'font-bold underline': selectedArray.value === array.name }" @click="selectArray(array.name)">
 							{{ array.name }}
 						</RouterLink>
 					</li>

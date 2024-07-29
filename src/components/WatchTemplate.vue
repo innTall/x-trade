@@ -3,11 +3,13 @@ import { storeToRefs } from 'pinia';
 import { useSearchStore } from '@/stores/searches.js';
 import { useTickerStore } from "@/stores/tickers.js";
 import { useSelectStore } from '@/stores/selects.js';
-const { searchTicker, searchTickers } = storeToRefs(useSearchStore());
-const { selectedTickers, errorMessage } = storeToRefs(useSelectStore());
+import { useArrayStore } from '@/stores/arrays.js';
 const { tickers } = storeToRefs(useTickerStore());
+const { searchTicker, searchTickers } = storeToRefs(useSearchStore());
 const { highlightMatch } = useSearchStore();
 const { selectTicker, deleteTicker, MAX_TICKERS } = useSelectStore();
+const { selectedTickers, errorMessage } = storeToRefs(useSelectStore());
+const { selectedArray } = storeToRefs(useArrayStore());
 </script>
 
 <template>
@@ -15,7 +17,7 @@ const { selectTicker, deleteTicker, MAX_TICKERS } = useSelectStore();
 		<div v-if="errorMessage" class="text-red-600">
 			{{ errorMessage }}
 		</div>
-		<p>Selected: {{ selectedTickers.length }} / {{ MAX_TICKERS }}</p>
+		<p>Selected: {{ selectedArray?.items.length }} / {{ MAX_TICKERS }}</p>
 		<div>
 			<input v-model="searchTicker" type="text" id="search" placeholder="Type here..." class="bg-gray-800">
 		</div>
@@ -26,7 +28,7 @@ const { selectTicker, deleteTicker, MAX_TICKERS } = useSelectStore();
 					v-html="highlightMatch(ticker.symbol)">
 				</li>
 			</ul>
-			<div v-if="selectedTickers.length">
+			<div v-if="selectedArray?.items.length">
 				<p>Selected:</p>
 				<ul>
 					<li v-for="ticker in selectedTickers" :key="ticker.symbol">
