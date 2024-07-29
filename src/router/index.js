@@ -16,6 +16,12 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: "/math",
+      name: "Mathpage",
+      component: () => import("../views/MathPage.vue"),
+      props: true,
+    },
   ],
 });
 export default router;

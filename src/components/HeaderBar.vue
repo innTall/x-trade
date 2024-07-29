@@ -25,6 +25,7 @@ onMounted(() => {
 		</div>
 		<div>
 			<RouterLink :to="{ name: 'Watchlist' }"> Watch |</RouterLink>
+			<RouterLink :to="{ name: 'Mathpage' }"> Math |</RouterLink>
 		</div>
 		<div class="">
 			<AssetSelect @assetChanged="handleAssetChange" />
