@@ -32,5 +32,5 @@ export const useArrayStore = defineStore(
       selectArray,
     };
   },
-  { persist: false }
+  { persist: true }
 );

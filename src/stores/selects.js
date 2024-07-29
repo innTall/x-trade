@@ -35,5 +35,5 @@ export const useSelectStore = defineStore(
     });
     return { selectedTickers, errorMessage, MAX_TICKERS, selectTicker, deleteTicker };
   },
-  { persist: false }
+  { persist: true }
 );

@@ -34,7 +34,7 @@ watch(route, (newRoute) => {
 				</ul>
 			</div>
 			<div class="flex justify-end mr-5 items-center">
-				<button @click="openModal" class="p-1 rounded-md border border-green-600">
+				<button @click="props.onAdd" class="p-1 rounded-md border border-green-600">
 					Add
 				</button>
 			</div>
