@@ -14,7 +14,7 @@ const props = defineProps({
 });
 
 watch(route, (newRoute) => {
-	selectedArray.value = newRoute.params.arrayName;
+	selectArray(newRoute.params.arrayName);
 });
 </script>
 

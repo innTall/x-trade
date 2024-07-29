@@ -8,7 +8,7 @@ const { tickers } = storeToRefs(useTickerStore());
 const { searchTicker, searchTickers } = storeToRefs(useSearchStore());
 const { highlightMatch } = useSearchStore();
 const { selectTicker, deleteTicker, MAX_TICKERS } = useSelectStore();
-const { selectedTickers, errorMessage } = storeToRefs(useSelectStore());
+const { errorMessage } = storeToRefs(useSelectStore());
 const { selectedArray } = storeToRefs(useArrayStore());
 </script>
 
@@ -31,7 +31,7 @@ const { selectedArray } = storeToRefs(useArrayStore());
 			<div v-if="selectedArray?.items.length">
 				<p>Selected:</p>
 				<ul>
-					<li v-for="ticker in selectedTickers" :key="ticker.symbol">
+					<li v-for="ticker in selectedArray.items" :key="ticker.symbol">
 						{{ ticker.symbol }} - {{ ticker.lastPrice * 1 }} - {{ ticker.quoteVolume }}
 						<button @click="deleteTicker(ticker)" class="ml-2 text-red-600 font-bold">
 							X
