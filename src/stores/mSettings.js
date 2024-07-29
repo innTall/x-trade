@@ -22,6 +22,6 @@ export const useSettingsStore = defineStore(
     };
   },
   {
-    persist: false,
+    persist: true,
   }
 );

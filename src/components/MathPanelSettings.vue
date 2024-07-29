@@ -11,7 +11,7 @@ const OpenSettings = ref(false);
 
 <template>
 	<div class="container">
-		<button @click="OpenSettings = true" class="text-sm p-2 rounded-lg border hover:bg-gray-700">Options</button>
+		<button @click="OpenSettings = true" class="text-sm p-2 rounded-lg border hover:bg-gray-700">Settings</button>
 		<Teleport to="body">
 			<div v-show="OpenSettings"
 				class="container fixed top-20 left-10 bg-gray-800 text-white z-10 border rounded-3xl p-2 w-1/2">
@@ -46,7 +46,7 @@ const OpenSettings = ref(false);
 					</label><br>
 				</div>
 				<div>
-					<button @click="OpenSettings = false, postOptions()" class="bg-gray-900 p-1 border rounded-md">Close</button>
+					<button @click="OpenSettings = false" class="bg-gray-900 p-1 border rounded-md">Close</button>
 				</div>
 			</div>
 		</Teleport>
