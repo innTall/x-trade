@@ -16,11 +16,11 @@ export const useSelectStore = defineStore(
     const selectTicker = (ticker) => {
       errorMessage.value = "";
       if (selectedArray.value.items.find(t => t.symbol === ticker.symbol)) {
-        errorMessage.value = "This ticker is already selected.";
+        errorMessage.value = "Reselected ticker!";
         return;
       }
       if (selectedArray.value.items.length >= MAX_TICKERS) {
-        errorMessage.value = `You can only select up to ${MAX_TICKERS} tickers.`;
+        errorMessage.value = `See limit! - ${MAX_TICKERS} !!!`;
         return;
       }
       addTickerToArray(ticker);
@@ -30,10 +30,13 @@ export const useSelectStore = defineStore(
       removeTickerFromArray(ticker);
     };
     
+    const isSelected = (ticker) => {
+      return selectedArray.value.items.some((t) => t.symbol === ticker.symbol);
+    };
     watch(searchTicker, () => {
       errorMessage.value = "";
     });
-    return { errorMessage, MAX_TICKERS, selectTicker, deleteTicker };
+    return { errorMessage, MAX_TICKERS, selectTicker, deleteTicker, isSelected };
   },
   { persist: true }
 );

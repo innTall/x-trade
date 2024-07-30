@@ -7,29 +7,31 @@ import { useArrayStore } from '@/stores/arrays.js';
 const { tickers } = storeToRefs(useTickerStore());
 const { searchTicker, searchTickers } = storeToRefs(useSearchStore());
 const { highlightMatch } = useSearchStore();
-const { selectTicker, deleteTicker, MAX_TICKERS } = useSelectStore();
+const { selectTicker, deleteTicker, MAX_TICKERS, isSelected } = useSelectStore();
 const { errorMessage } = storeToRefs(useSelectStore());
 const { selectedArray } = storeToRefs(useArrayStore());
 </script>
 
 <template>
 	<div class="ml-2">
-		<div v-if="errorMessage" class="text-red-600">
-			{{ errorMessage }}
+		<div class="flex gap-2">
+			<input v-model="searchTicker" type="text" id="search" placeholder="Type here..." class="w-1/3 bg-gray-800">
+			<p class="w-1/3 ">Selected: {{ selectedArray?.items.length }} / {{ MAX_TICKERS }}</p>
+			<div v-if="errorMessage" class="w-1/3 text-center px-2 border border-red-600 text-red-600 rounded-lg">
+				{{ errorMessage }}
+			</div>
 		</div>
-		<p>Selected: {{ selectedArray?.items.length }} / {{ MAX_TICKERS }}</p>
 		<div>
-			<input v-model="searchTicker" type="text" id="search" placeholder="Type here..." class="bg-gray-800">
-		</div>
-		<div>
-			<ul v-if="searchTickers.length">
-				<li> Showing {{ searchTickers.length }} of {{ tickers.length }} results</li>
-				<li v-for="ticker in searchTickers" :key="ticker.symbol" @click="selectTicker(ticker)"
-					v-html="highlightMatch(ticker.symbol)">
-				</li>
-			</ul>
+			<div v-if="searchTickers.length" class="relative">
+				<ul class="absolute bg-gray-800 shadow-lg rounded-lg z-10 w-1/3 border">
+					<!--li> Showing {{ searchTickers.length }} of {{ tickers.length }} results</li-->
+					<li v-for="ticker in searchTickers" :key="ticker.symbol" @click="selectTicker(ticker)"
+						v-html="highlightMatch(ticker.symbol)" :class="{ 'text-gray-500': isSelected(ticker) }">
+					</li>
+				</ul>
+			</div>
 			<div v-if="selectedArray?.items.length">
-				<p>Selected:</p>
+				<p class="font-bold underline">{{ selectedArray.name }}</p>
 				<ul>
 					<li v-for="ticker in selectedArray.items" :key="ticker.symbol">
 						{{ ticker.symbol }} - {{ ticker.lastPrice * 1 }} - {{ ticker.quoteVolume }}
