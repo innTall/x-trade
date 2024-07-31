@@ -5,10 +5,21 @@ const props = defineProps({
 		required: true,
 	}
 });
+const emit = defineEmits(['removeTicker']);
+let pressTimer = null;
+const startPress = () => {
+	pressTimer = setTimeout(() => {
+		emit('removeTicker', props.ticker);
+	}, 800); // 800ms for long press
+};
+const cancelPress = () => {
+	clearTimeout(pressTimer);
+};
 </script>
 
 <template>
-	<article class="h-24 flex border">
+	<article @mousedown="startPress" @mouseup="cancelPress" @mouseleave="cancelPress" @touchstart="startPress"
+		@touchend="cancelPress" class="h-24 flex border">
 		<div id="color" class="w-1 bg-green-600"></div>
 		<div class="container flex justify-between">
 			<div class="pl-2 grid grid-cols-1 content-between">

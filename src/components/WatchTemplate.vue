@@ -11,6 +11,10 @@ const { highlightMatch } = useSearchStore();
 const { selectTicker, deleteTicker, MAX_TICKERS, isSelected } = useSelectStore();
 const { errorMessage } = storeToRefs(useSelectStore());
 const { selectedArray } = storeToRefs(useArrayStore());
+const removeTicker = (ticker) => {
+	// Assuming you have a method to remove the ticker from the selectedArray
+	deleteTicker(ticker);
+};
 </script>
 
 <template>
@@ -34,7 +38,8 @@ const { selectedArray } = storeToRefs(useArrayStore());
 			<div v-if="selectedArray?.items.length">
 				<p class="font-bold underline">{{ selectedArray.name }}</p>
 				<div class="grid grid-cols-2 gap-2">
-					<TickerItem v-for="ticker in selectedArray.items" :key="ticker.symbol" :ticker="ticker" />
+					<TickerItem v-for="ticker in selectedArray.items" :key="ticker.symbol" :ticker="ticker"
+						@removeTicker="removeTicker" />
 				</div>
 			</div>
 		</div>
