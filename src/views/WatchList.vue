@@ -16,7 +16,7 @@ const closeModal = () => {
 </script>
 
 <template>
-	<div class="p-2">
+	<div class="">
 		<WatchNavbar :onAdd="openModal" />
 		<WatchModal v-if="showModal" @close="closeModal" @create="createArray">
 			<template v-slot:body>

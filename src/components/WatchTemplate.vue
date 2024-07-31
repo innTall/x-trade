@@ -1,5 +1,6 @@
 <script setup>
 import { storeToRefs } from 'pinia';
+import TickerItem from '@/components/TickerItem.vue';
 import { useSearchStore } from '@/stores/searches.js';
 import { useTickerStore } from "@/stores/tickers.js";
 import { useSelectStore } from '@/stores/selects.js';
@@ -13,7 +14,7 @@ const { selectedArray } = storeToRefs(useArrayStore());
 </script>
 
 <template>
-	<div class="ml-2">
+	<div class="ml-2 mr-2">
 		<div class="flex gap-2">
 			<input v-model="searchTicker" type="text" id="search" placeholder="Type here..." class="w-1/3 bg-gray-800">
 			<p class="w-1/3 ">Selected: {{ selectedArray?.items.length }} / {{ MAX_TICKERS }}</p>
@@ -32,14 +33,9 @@ const { selectedArray } = storeToRefs(useArrayStore());
 			</div>
 			<div v-if="selectedArray?.items.length">
 				<p class="font-bold underline">{{ selectedArray.name }}</p>
-				<ul>
-					<li v-for="ticker in selectedArray.items" :key="ticker.symbol">
-						{{ ticker.symbol }} - {{ ticker.lastPrice * 1 }} - {{ ticker.quoteVolume }}
-						<button @click="deleteTicker(ticker)" class="ml-2 text-red-600 font-bold">
-							X
-						</button>
-					</li>
-				</ul>
+				<div class="grid grid-cols-2 gap-2">
+					<TickerItem v-for="ticker in selectedArray.items" :key="ticker.symbol" :ticker="ticker" />
+				</div>
 			</div>
 		</div>
 	</div>
