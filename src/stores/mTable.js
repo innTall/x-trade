@@ -6,7 +6,7 @@ import { useSettingsStore } from "@/stores/mSettings.js";
 //* ------------------
 //* <<< input data >>>
 //* ------------------
-const { minPrice, maxPrice, gridSize } = useMinmaxStore();
+const { minPrice, maxPrice, gridSize } = storeToRefs(useMinmaxStore());
 const {
   minFirstOrder,
   gridOrders,
@@ -15,7 +15,7 @@ const {
   buyLevelsCoef,
   priceRound,
   amountRound,
-} = useSettingsStore();
+} = storeToRefs(useSettingsStore());
 
 export const useTableStore = defineStore(
   "table",
@@ -23,31 +23,31 @@ export const useTableStore = defineStore(
     //* ----------------------------------
     //* <<< base level coef and values >>>
     //* ----------------------------------
-    const gridFrequence = computed(() => (gridSize / gridOrders).toFixed(2));
+    const gridFrequence = computed(() => (gridSize.value / gridOrders.value).toFixed(2));
     const minGridDeposit = computed(() =>
       Math.ceil(
-        (minFirstOrder * (1 - orderRiseCoef ** gridOrders)) /
-          (1 - orderRiseCoef)
+        (minFirstOrder.value * (1 - orderRiseCoef.value ** gridOrders.value)) /
+          (1 - orderRiseCoef.value)
       )
     );
     const firstBuyLevelTicks = computed(() =>
-      (maxPrice - minPrice - (maxPrice - minPrice) * firstBuyLevel).toFixed(
-        priceRound
+      (maxPrice.value - minPrice.value - (maxPrice.value - minPrice.value) * firstBuyLevel.value).toFixed(
+        priceRound.value.value
       )
     );
     const buyFirstLevel = computed(() =>
-      (maxPrice - firstBuyLevelTicks.value).toFixed(priceRound)
+      (maxPrice.value - firstBuyLevelTicks.value).toFixed(priceRound.value)
     );
     const tradeMinPrice = computed(() =>
-      (minPrice - (minPrice * gridFrequence.value) / 100).toFixed(priceRound)
+      (minPrice.value - (minPrice.value * gridFrequence.value) / 100).toFixed(priceRound.value)
     );
     const gridSizeTick = computed(() =>
-      (maxPrice - minPrice).toFixed(priceRound)
+      (maxPrice.value - minPrice.value).toFixed(priceRound.value)
     );
     const buyLevelsDiffCoef = computed(() =>
       (
         (tradeMinPrice.value / buyFirstLevel.value) **
-        (1 / (gridOrders - 1))
+        (1 / (gridOrders.value - 1))
       ).toFixed(4)
     );
 
@@ -55,7 +55,7 @@ export const useTableStore = defineStore(
     //* <<< buy order keys >>>
     //* ----------------------
     const gridOrdersKeys = computed(() =>
-      Array.from({ length: gridOrders }, (_, index) => index + 1)
+      Array.from({ length: gridOrders.value }, (_, index) => index + 1)
     );
     //* --------------------------------------------
     //* <<< difference entre buy levels in ticks >>>
@@ -79,8 +79,8 @@ export const useTableStore = defineStore(
     let startCoefBuyLevels;
     let endCoefBuyLevels;
 
-    if (gridOrders >= 3 && gridOrders <= 15) {
-      const levels = coefLevels[gridOrders];
+    if (gridOrders.value >= 3 && gridOrders.value <= 15) {
+      const levels = coefLevels[gridOrders.value];
       startCoefBuyLevels = levels.start;
       endCoefBuyLevels = levels.end;
     }
@@ -97,14 +97,14 @@ export const useTableStore = defineStore(
 
     let baseDiffDirect = [];
     let j; //! fixed bugs of number orders
-    if (baseBuyLevels.length !== gridOrders) {
+    if (baseBuyLevels.length !== gridOrders.value) {
       j = 1;
     } else {
       j = 0;
     }
     for (let i = j; i < baseBuyLevels.length - 1; i++)
       baseDiffDirect[i] = (baseBuyLevels[i] - baseBuyLevels[i + 1]).toFixed(
-        priceRound
+        priceRound.value
       );
 
     let baseDiffReverce = baseDiffDirect.reverse();
@@ -117,11 +117,11 @@ export const useTableStore = defineStore(
     const coefBuyLevelsArray = getCoefBuyLevelsArray(
       startCoefBuyLevels,
       endCoefBuyLevels + 0.1,
-      buyLevelsCoef
+      buyLevelsCoef.value
     );
 
     const finalDiffBuyLevels = baseDiffReverce.map(function (number, index) {
-      return (number * Number(coefBuyLevelsArray[index])).toFixed(priceRound);
+      return (number * Number(coefBuyLevelsArray[index])).toFixed(priceRound.value);
     });
 
     //* ---------------------------------
@@ -132,7 +132,7 @@ export const useTableStore = defineStore(
     let buyLimitLevels = [];
     function currentSubtr(x) {
       x.reduce((subtr, current, i) => {
-        return (buyLimitLevels[i] = (subtr - current).toFixed(priceRound));
+        return (buyLimitLevels[i] = (subtr - current).toFixed(priceRound.value));
       }, y);
     }
     currentSubtr(x);
@@ -141,11 +141,11 @@ export const useTableStore = defineStore(
     //* -------------------------------
     //* <<< BUY-order-$ >>> BUYLIMIT []
     //* -------------------------------
-    const buyOrderNext = (minFirstOrder * orderRiseCoef ** gridOrders).toFixed(
+    const buyOrderNext = (minFirstOrder.value * orderRiseCoef.value ** gridOrders.value).toFixed(
       2
     );
 
-    const xBuyOrders = (end, start = minFirstOrder, step = orderRiseCoef) =>
+    const xBuyOrders = (end, start = minFirstOrder.value, step = orderRiseCoef.value) =>
       Array.from({
         length: Math.floor(Math.log(end / start) / Math.log(step)),
       }).map((_, gridOrders) => start * step ** gridOrders);
@@ -155,12 +155,12 @@ export const useTableStore = defineStore(
     });
 
     let k; //! fixed bugs of number orders
-    if (xBuyOrdersArray.length !== gridOrders) {
+    if (xBuyOrdersArray.length !== gridOrders.value) {
       k = 1;
     } else {
       k = 0;
     }
-    const buyOrders = (end, start = minFirstOrder, step = orderRiseCoef) =>
+    const buyOrders = (end, start = minFirstOrder.value, step = orderRiseCoef.value) =>
       Array.from({
         length: Math.floor(Math.log(end / start) / Math.log(step)) + k,
       }).map((_, gridOrders) => start * step ** gridOrders);
@@ -191,7 +191,7 @@ export const useTableStore = defineStore(
     //* <<< amountOrder >>> AMOUNTORDER []
     //* ----------------------------------
     const amountBuyOrders = buyOrdersArray.map(function (number, index) {
-      return +(number / Number(buyLimitLevels[index])).toFixed(amountRound);
+      return +(number / Number(buyLimitLevels[index])).toFixed(amountRound.value);
     });
 
     //* -------------------------------------
@@ -214,18 +214,18 @@ export const useTableStore = defineStore(
     //* <<< Buy Zero levels >>> Zero []
     //* -------------------------------
     const buyZeroLevels = sumBuyOrders.map(function (number, index) {
-      return +(number / sumAmountOrders[index]).toFixed(priceRound);
+      return +(number / sumAmountOrders[index]).toFixed(priceRound.value);
     });
 
     //* -------------------------------------
     //* <<< SELL-order-levels >>> LEVELFIX []
     //* -------------------------------------
     let sellLevels = [];
-    for (let i = 0; i < gridOrders; i++) {
-      sellLevels.push(buyZeroLevels[i] * (gridSize / 100));
+    for (let i = 0; i < gridOrders.value; i++) {
+      sellLevels.push(buyZeroLevels[i] * (gridSize.value / 100));
     }
     let sellLevelsArray = buyZeroLevels.map(function (number, index) {
-      return +(number + sellLevels[index]).toFixed(priceRound);
+      return +(number + sellLevels[index]).toFixed(priceRound.value);
     });
 
     //* -----------------------------------
