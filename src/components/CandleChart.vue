@@ -10,8 +10,9 @@ HighchartsAccessibility(Highcharts);
 const { data, ohlc, volume, chartScale, } = storeToRefs(useChartStore());
 const { getData } = useChartStore();
 const container = ref(null);
-const chart = ref([]);
-const initChart = () => {
+//const chart = ref([]);
+let chart;
+const initChart = (data) => {
 	Highcharts.setOptions({
 		chart: {
 			backgroundColor: '#111827',
@@ -48,6 +49,16 @@ const initChart = () => {
 					fontSize: 10,
 					color: '#ffffff'
 				}
+			},
+			crosshair: {
+				color: '#676767',
+				label: {
+					enabled: true,
+					fontSize: 10,
+					backgroundColor: '#111827',
+					borderWidth: 1,
+					borderColor: '#ffffff',
+				}
 			}
 		},
 		yAxis: {
@@ -58,10 +69,21 @@ const initChart = () => {
 					fontSize: 10,
 					color: '#ffffff'
 				}
+			},
+			crosshair: {
+				snap: false,
+				label: {
+					enabled: true,
+					fontSize: 10,
+					backgroundColor: '#111827',
+					borderWidth: 1,
+					borderColor: '#ffffff',
+					format: '{value:.2f}',
+				}
 			}
 		}
 	});
-	chart.value = Highcharts.stockChart(container.value, {
+	chart = Highcharts.stockChart(container.value, {
 		chart: {
 			events: {
 				selection(event) {
@@ -90,7 +112,9 @@ const initChart = () => {
 			crosshair: {
 				label: {
 					enabled: true
-				}
+				},
+				color: '#676767',
+				snap: true,
 			}
 		},
 		yAxis: [
@@ -98,7 +122,8 @@ const initChart = () => {
 				crosshair: {
 					label: {
 						enabled: true
-					}
+					},
+					color: '#676767',
 				}
 			},
 			{
@@ -107,8 +132,28 @@ const initChart = () => {
 				height: '30%',
 				offset: 0,
 				//opposite: false,
+				crosshair: false,
 			}
 		],
+		tooltip: {
+			enabled: true,
+			useHTML: true,
+			formatter: function () {
+				const point = this.points[0].point;
+				return `
+				  <div style="position: absolute; left: 5px; top: 5px; font-size: 12px; backgroundColor: #111827; color: white">
+				 		<span>H - ${point.high}</span><br/>
+				  	<span>L - ${point.low}</span>
+				  </div>
+			  `;
+			},
+			positioner: function () {
+				return { x: 0, y: 0 };
+			},
+			shadow: false,
+			borderWidth: 0,
+			backgroundColor: 'transparent',
+		},
 		series: [
 			{
 				type: 'candlestick',
@@ -139,15 +184,19 @@ const initChart = () => {
 		}
 	});
 	if (chartScale.value.start !== null && chartScale.value.end !== null) {
-		chart.value.xAxis[0].setExtremes(chartScale.value.start, chartScale.value.end);
+		chart.xAxis[0].setExtremes(chartScale.value.start, chartScale.value.end);
 	}
 };
 onMounted(() => {
-	initChart();
+	if (ohlc.value.length === 0) {
+		initChart(data);
+	} else {
+		initChart([]);
+	}
 });
 watch(ohlc, (newVal) => {
-	if (chart.value) {
-		const ohlcSeries = chart.value.get('ohlc');
+	if (chart) {
+		const ohlcSeries = chart.get('ohlc');
 		if (ohlcSeries) {
 			ohlcSeries.setData(newVal);
 		}
@@ -155,8 +204,8 @@ watch(ohlc, (newVal) => {
 }, { deep: true });
 
 watch(volume, (newVal) => {
-	if (chart.value) {
-		const volumeSeries = chart.value.get('Volume');
+	if (chart) {
+		const volumeSeries = chart.get('Volume');
 		if (volumeSeries) {
 			volumeSeries.setData(newVal);
 		}

@@ -9,7 +9,7 @@ export const useChartStore = defineStore(
     const volume = ref([]);
     const chartScale = ref({ start: null, end: null });
     /*
-    const getData = async (symbol = "LTCUSDT", interval = "1d") => {
+    const getData = async (symbol = "ADAUSDT", interval = "1d") => {
       const uri = `https://api.binance.com/api/v3/klines?interval=${interval}&symbol=${symbol}`; // for candlestick chart
       const response = await fetch(uri);
       data = await response.json();
