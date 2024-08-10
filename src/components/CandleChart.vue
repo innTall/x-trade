@@ -7,12 +7,47 @@ import { useChartStore } from '../stores/chart.js';
 import HighchartsAccessibility from 'highcharts/modules/accessibility';
 HighchartsAccessibility(Highcharts);
 
-const { data, ohlc, volume, chartScale, } = storeToRefs(useChartStore());
+const { ohlc, volume, chartScale } = storeToRefs(useChartStore());
 const { getData } = useChartStore();
 const container = ref(null);
 //const chart = ref([]);
-let chart;
+//let chart;
 const initChart = (data) => {
+	const updateHighLowLabels = (chart) => {
+		const visiblePoints = chart.series[0].points.filter(point => point.isInside);
+		if (visiblePoints.length === 0) return;
+		let highestPoint = visiblePoints[0];
+		let lowestPoint = visiblePoints[0];
+		visiblePoints.forEach(point => {
+			if (point.high > highestPoint.high) highestPoint = point;
+			if (point.low < lowestPoint.low) lowestPoint = point;
+		});
+		// Remove existing labels
+		chart.highLabel && chart.highLabel.destroy();
+		chart.lowLabel && chart.lowLabel.destroy();
+		// Add label for the highest point
+		chart.highLabel = chart.renderer.text(
+			`${highestPoint.high}_`,
+			chart.plotLeft + chart.xAxis[0].toPixels(highestPoint.x) - 50,
+			chart.plotTop + chart.yAxis[0].toPixels(highestPoint.high) - 15
+		)
+			.css({
+				color: '#FFffff', // Red for high
+				fontSize: '10px'
+			})
+			.add();
+		// Add label for the lowest point
+		chart.lowLabel = chart.renderer.text(
+			`${lowestPoint.low}_`,
+			chart.plotLeft + chart.xAxis[0].toPixels(lowestPoint.x) - 55,
+			chart.plotTop + chart.yAxis[0].toPixels(lowestPoint.low) - 10
+		)
+			.css({
+				color: '#ffffFF', // Blue for low
+				fontSize: '10px'
+			})
+			.add();
+	};
 	Highcharts.setOptions({
 		chart: {
 			backgroundColor: '#111827',
@@ -39,7 +74,7 @@ const initChart = (data) => {
 				dataGrouping: {
 					enabled: false,
 				},
-			},
+			}
 		},
 		xAxis: {
 			gridLineColor: '#383838',
@@ -83,9 +118,10 @@ const initChart = (data) => {
 			}
 		}
 	});
-	chart = Highcharts.stockChart(container.value, {
+	const chart = Highcharts.stockChart(container.value, {
 		chart: {
-			events: {
+			events:
+			{
 				selection(event) {
 					if (event.resetSelection) {
 						return true;
@@ -93,6 +129,12 @@ const initChart = (data) => {
 					const { min, max } = event.xAxis[0];
 					chart.xAxis[0].setExtremes(min, max);
 					return false;
+				},
+				load() {
+					updateHighLowLabels(this);
+				},
+				redraw() {
+					updateHighLowLabels(this);
 				}
 			}
 		},
@@ -167,6 +209,10 @@ const initChart = (data) => {
 				name: 'Volume',
 				data: volume.value,
 				yAxis: 1,
+				color: '#676767',
+				label: {
+					enable: false
+				}
 			},
 		],
 		xAxis: {
