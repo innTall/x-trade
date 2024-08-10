@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "dompurify": "^3.1.6",
+    "highcharts": "^11.4.6",
+    "highcharts-vue": "^2.0.1",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "vue": "^3.4.26",

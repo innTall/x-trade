@@ -15,6 +15,12 @@ importers:
       dompurify:
         specifier: ^3.1.6
         version: 3.1.6
+      highcharts:
+        specifier: ^11.4.6
+        version: 11.4.6
+      highcharts-vue:
+        specifier: ^2.0.1
+        version: 2.0.1(highcharts@11.4.6)(vue@3.4.33)
       pinia:
         specifier: ^2.1.7
         version: 2.1.7(vue@3.4.33)
@@ -1524,6 +1530,15 @@ packages:
   hasown@2.0.2:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
+
+  highcharts-vue@2.0.1:
+    resolution: {integrity: sha512-7yVaKvsWlx7OgmKFXE2D99fi/0tr2A85H4KUz3jL7CRQhAwvEvXgtDIyTBGLHJsOC5L9VlppAI7k6KfIi0j0hg==}
+    peerDependencies:
+      highcharts: '>=5.0.0'
+      vue: '>=3.0.0'
+
+  highcharts@11.4.6:
+    resolution: {integrity: sha512-ntFZ053giEEquAxza+HlOWiLQyCLOjQ3M3EV4r6LoSNKS/fz2S0EKGl8G7Jls9EaYmdAHecB/vL4hGI2J1Ud9g==}
 
   ico-endec@0.1.6:
     resolution: {integrity: sha512-ZdLU38ZoED3g1j3iEyzcQj+wAkY2xfWNkymszfJPoxucIUhK7NayQ+/C4Kv0nDFMIsbtbEHldv3V8PU494/ueQ==}
@@ -4100,6 +4115,13 @@ snapshots:
   hasown@2.0.2:
     dependencies:
       function-bind: 1.1.2
+
+  highcharts-vue@2.0.1(highcharts@11.4.6)(vue@3.4.33):
+    dependencies:
+      highcharts: 11.4.6
+      vue: 3.4.33
+
+  highcharts@11.4.6: {}
 
   ico-endec@0.1.6: {}
 
