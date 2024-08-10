@@ -1,6 +1,9 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
 import Highcharts from 'highcharts/highstock';
+import indicatorsInit from 'highcharts/indicators/indicators';
+import ao from 'highcharts/indicators/ao.js';
+import rsi from 'highcharts/indicators/rsi.js';
 //import data from "../data/klines.json";
 import { storeToRefs } from "pinia";
 import { useChartStore } from '../stores/chart.js';
@@ -8,10 +11,11 @@ import HighchartsAccessibility from 'highcharts/modules/accessibility';
 HighchartsAccessibility(Highcharts);
 
 const { ohlc, volume, chartScale } = storeToRefs(useChartStore());
-const { getData } = useChartStore();
 const container = ref(null);
-//const chart = ref([]);
-//let chart;
+indicatorsInit(Highcharts);
+ao(Highcharts); // Initialize the AO indicator
+rsi(Highcharts);
+
 const initChart = (data) => {
 	const updateHighLowLabels = (chart) => {
 		const visiblePoints = chart.series[0].points.filter(point => point.isInside);
@@ -161,6 +165,7 @@ const initChart = (data) => {
 		},
 		yAxis: [
 			{
+				height: '80%',
 				crosshair: {
 					label: {
 						enabled: true
@@ -170,11 +175,22 @@ const initChart = (data) => {
 			},
 			{
 				gridLineWidth: false,
-				top: '70%',
-				height: '30%',
+				top: '60%',
+				height: '20%',
 				offset: 0,
 				//opposite: false,
 				crosshair: false,
+			},
+			{
+				top: '80%',
+				height: '20%',
+				offset: 0,
+			},
+			{
+				top: '80%',
+				height: '20%',
+				offset: 0,
+				//opposite: false,
 			}
 		],
 		tooltip: {
@@ -210,10 +226,35 @@ const initChart = (data) => {
 				data: volume.value,
 				yAxis: 1,
 				color: '#676767',
+				opacity: 0.6,
 				label: {
 					enable: false
 				}
 			},
+			{
+				type: 'ao',
+				yAxis: 2,
+				greaterBarColor: '#3CB371',
+				lowerBarColor: '#FF6347',
+				linkedTo: 'bnb',
+				showInLegend: true,
+				crisp: false,
+				dataGrouping: {
+					enabled: false
+				}
+			},
+			{
+				type: 'rsi',
+				yAxis: 3,
+				linkedTo: 'bnb',
+				lineWidth: 1,
+				lineColor: '#00BFFF',
+				showInLegend: false,
+				marker: false, // ok
+				dataGrouping: {
+					enabled: false
+				}
+			}
 		],
 		xAxis: {
 			endOnTick: true, // Ensure it does not end on tick
