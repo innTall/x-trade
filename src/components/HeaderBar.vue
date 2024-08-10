@@ -24,8 +24,9 @@ onMounted(() => {
 			<LogoItem />
 		</div>
 		<div>
-			<RouterLink :to="{ name: 'Watchlist' }"> Watch |</RouterLink>
-			<RouterLink :to="{ name: 'Mathpage' }"> Math |</RouterLink>
+			<RouterLink :to="{ name: 'Watchlist' }"> W |</RouterLink>
+			<RouterLink :to="{ name: 'Chartpage' }"> Ch |</RouterLink>
+			<RouterLink :to="{ name: 'Mathpage' }"> M |</RouterLink>
 		</div>
 		<div class="">
 			<AssetSelect @assetChanged="handleAssetChange" />

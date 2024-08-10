@@ -17,11 +17,15 @@ const router = createRouter({
       ],
     },
     {
+      path: "/chart",
+      name: "Chartpage",
+      component: () => import("../views/ChartPage.vue"),
+    },
+    {
       path: "/math",
       name: "Mathpage",
       component: () => import("../views/MathPage.vue"),
-      props: true,
-    },
+    }
   ],
 });
 export default router;

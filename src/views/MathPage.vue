@@ -1,5 +1,6 @@
 <script setup>
 import MathNavbar from '../components/MathNavbar.vue';
+import CandleChart from '../components/CandleChart.vue';
 import MathPanel from '../components/MathPanel.vue';
 import MathTable from '../components/MathTable.vue';
 </script>
@@ -9,7 +10,7 @@ import MathTable from '../components/MathTable.vue';
 		<MathNavbar />
 		<div>
 			<div class="border-b">
-				<p>Chart</p>
+				<CandleChart />
 			</div>
 			<div class="p-2 border-b border-green-600">
 				<MathPanel />
