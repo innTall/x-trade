@@ -4,6 +4,11 @@ import CandleChart from '../components/CandleChart.vue';
 
 <template>
 	<div>
-		<CandleChart />
+		<CandleChart id="chart"/>
 	</div>
 </template>
+<style scoped>
+#chart {
+	height: 550px;
+}
+</style>

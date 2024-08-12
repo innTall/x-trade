@@ -178,19 +178,28 @@ const initChart = (data) => {
 				top: '60%',
 				height: '20%',
 				offset: 0,
-				//opposite: false,
+				opposite: false,
 				crosshair: false,
+				labels: {
+					enabled: false
+				},
 			},
 			{
 				top: '80%',
 				height: '20%',
 				offset: 0,
+				labels: {
+					enabled: false
+				},
 			},
 			{
 				top: '80%',
 				height: '20%',
 				offset: 0,
 				//opposite: false,
+				labels: {
+					enabled: false
+				},
 			}
 		],
 		tooltip: {

@@ -14,7 +14,7 @@ export const useSearchStore = defineStore(
       const searchPattern = new RegExp(`^${searchTicker.value}`, "i");
       let matches = 0;
       return tickers.value.filter((ticker) => {
-        if (searchPattern.test(ticker.symbol) && matches < 25) {
+        if (searchPattern.test(ticker.symbol) && matches < 35) {
           matches++;
           return ticker;
         }

@@ -11,7 +11,7 @@ export const useSelectStore = defineStore(
     const { addTickerToArray, removeTickerFromArray } = useArrayStore();
     const { selectedArray } = storeToRefs(useArrayStore());
     const errorMessage = ref("");
-    const MAX_TICKERS = 3;
+    const MAX_TICKERS = 20;
 
     const selectTicker = (ticker) => {
       errorMessage.value = "";
