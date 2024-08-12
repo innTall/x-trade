@@ -1,4 +1,9 @@
 <script setup>
+import { storeToRefs } from 'pinia';
+import { ref, onMounted } from 'vue';
+import { useSparklineStore } from '@/stores/sparklines.js';
+import SparkLine from './SparkLine.vue';
+const { prices } = storeToRefs(useSparklineStore());
 const props = defineProps({
 	ticker: {
 		type: Object,
@@ -33,7 +38,9 @@ const cancelPress = () => {
 				</div>
 			</div>
 			<div class="w-1/2 grid grid-cols-1 content-between">
-				<div class="h-12 border text-center text-xs bg-gray-800">Sparkline</div>
+				<div id="chart" class="h-12 border text-center text-xs bg-gray-800">
+					<SparkLine :data="prices" color="#00ff00" />
+				</div>
 				<div class="grid gap-1 text-right pr-2">
 					<p class="text-sm">{{ ticker.lastPrice * 1 }}</p>
 					<p class="text-xs">{{ ticker.quoteVolume }} $</p>
