@@ -22,7 +22,7 @@ const router = createRouter({
       component: () => import("../views/ChartPage.vue"),
     },
     {
-      path: "/math",
+      path: "/math/:symbol",
       name: "Mathpage",
       component: () => import("../views/MathPage.vue"),
     }

@@ -33,8 +33,8 @@ onMounted(() => {
 		</div>
 		<div>
 			<RouterLink :to="{ name: 'Watchlist' }"> W |</RouterLink>
-			<RouterLink :to="{ name: 'Chartpage' }"> Ch |</RouterLink>
-			<RouterLink :to="{ name: 'Mathpage' }"> M |</RouterLink>
+			<RouterLink to="/chart"> Ch |</RouterLink>
+			<RouterLink to="/math/:symbol"> M |</RouterLink>
 		</div>
 		<div class="flex gap-3">
 			<div class="">
