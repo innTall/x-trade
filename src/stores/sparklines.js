@@ -1,14 +1,17 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import { storeToRefs } from "pinia";
+import { useIntervalStore } from "./intervals.js";
 //import data from "../data/sparkline.json";
 export const useSparklineStore = defineStore(
   "sparkline",
   () => {
+    const { selectedInterval } = storeToRefs(useIntervalStore());
     let data;
     const prices = ref([]);
 
     const symbol = "BTCUSDT";
-    const interval = "15m";
+    const interval = selectedInterval.value;
     const uri = `https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=100`;
     const fetchData = async () => {
       try {

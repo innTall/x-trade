@@ -290,7 +290,7 @@ onMounted(() => {
 		initChart([]);
 	}
 });
-watch(ohlc, (newVal) => {
+watch(ohlc.value, (newVal) => {
 	if (chart) {
 		const ohlcSeries = chart.get('ohlc');
 		if (ohlcSeries) {
@@ -299,7 +299,7 @@ watch(ohlc, (newVal) => {
 	}
 }, { deep: true });
 
-watch(volume, (newVal) => {
+watch(volume.value, (newVal) => {
 	if (chart) {
 		const volumeSeries = chart.get('Volume');
 		if (volumeSeries) {
