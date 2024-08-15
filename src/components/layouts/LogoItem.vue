@@ -4,7 +4,7 @@
 <template>
 	<div class="flex gap-2">
 		<RouterLink :to="{ name: 'Watchlist' }">
-			<img src="/public/logo.png" alt="Logo" class="h-10 w-10" />
+			<img src="/logo.png" alt="Logo" class="h-10 w-10" />
 		</RouterLink>
 		<div class="">
 			<p class="text-sm text-right">
