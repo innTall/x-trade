@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, watch } from "vue";
-import data from "../data/ticker.json";
+//import data from "../data/ticker.json";
 import { storeToRefs } from "pinia";
 import { useAssetStore } from "./assets.js";
 
@@ -11,9 +11,9 @@ export const useTickerStore = defineStore(
     const { selectedAsset } = storeToRefs(useAssetStore());
     async function getSymbols() {
       try {
-        //const uri = "https://api.binance.com/api/v3/ticker/24hr";
-        //const response = await fetch(uri);
-        //const data = await response.json();
+        const uri = "https://api.binance.com/api/v3/ticker/24hr";
+        const response = await fetch(uri);
+        const data = await response.json();
         const filterAsset = data.filter((item) =>
           item.symbol.endsWith(selectedAsset.value)
         );

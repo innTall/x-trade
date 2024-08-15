@@ -11,6 +11,7 @@ import HighchartsAccessibility from 'highcharts/modules/accessibility';
 HighchartsAccessibility(Highcharts);
 
 const { ohlc, volume, chartScale } = storeToRefs(useChartStore());
+const { data } = useChartStore();
 const container = ref(null);
 indicatorsInit(Highcharts);
 ao(Highcharts); // Initialize the AO indicator
